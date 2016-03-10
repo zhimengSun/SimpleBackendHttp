@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import rx.Observable;
@@ -21,49 +22,39 @@ import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 public class BackgroundHttpUtils<T> {
 
     private static BackgroundHttpUtils backgroundHttpUtils;
-    private String url, httpMethod;
     private Handler backgroundHandler;
-    private T ctx;
-    Map<String, String> textParams, fileParams;
-
 
     public void startSendHttp(T c, String u) {
-        startSendHttp(c, u, "GET");
+        startSendHttp(c, u, HTTPMethod.GET);
     }
 
     public void startSendHttp(T c, String u, String h) {
-        startSendHttp(c, u, h, null);
+        startSendHttp(c, u, h, new HashMap<String, String>());
     }
 
     public void startSendHttp(T c, String u, String h, Map<String, String> ts) {
-        startSendHttp(c, u, h, ts, null);
-
+        startSendHttp(c, u, h, ts, new HashMap<String, String>());
     }
 
     public void startSendHttp(T c, String u, String h, Map<String, String> ts, Map<String, String> fs) {
-        this.ctx = c;
-        this.url = u;
-        this.httpMethod = h;
-        this.textParams = ts;
-        this.fileParams = fs;
-        handleFinalRes();
+        handleFinalRes(c,u,h,ts,fs);
     }
 
-    public void handleFinalRes() {
+    public void handleFinalRes(final T c, String u, String h, Map<String, String> ts, Map<String, String> fs) {
         if (backgroundHandler == null)
             backgroundHandler = new Handler(BackgroundHttpUtils.getInstance().getBackThread().getLooper());
-        BackgroundHttpUtils.getInstance().sendRequestObservable()
+        sendRequestObservable(c,u,h,ts,fs)
                 .subscribeOn(HandlerScheduler.from(backgroundHandler))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
-                        Log.i("ZMAsyncHttp", "onCompleted()");
+                        Log.v("ZMAsyncHttp", "onCompleted()");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("ZMAsyncHttp", "onError()", e);
+                        Log.v("ZMAsyncHttp", "onError()", e);
                     }
 
                     @Override
@@ -71,19 +62,14 @@ public class BackgroundHttpUtils<T> {
                         String[] backArr = str.split("\\|");
                         String urlId = "";
                         String json = "{}";
-                        Log.i("JSON", str);
+                        Log.v("ZMAsyncHttp", str);
                         if (backArr.length >= 2) {
                             urlId = backArr[0];
                             json = backArr[1];
                         }
-                        ((JSONCallback) ctx).handleJsonString(urlId, json);
-                        Log.i("ZMAsyncHttp", "onNext(" + str + ")");
+                        ((ZMRequestCallback) c).handleJsonString(urlId, json);
                     }
                 });
-    }
-
-    public Map<String, String> getTextParams() {
-        return textParams;
     }
 
     public static BackgroundHttpUtils getInstance() {
@@ -97,13 +83,17 @@ public class BackgroundHttpUtils<T> {
         return backgroundThread;
     }
 
-    public Observable<String> sendRequestObservable() {
+    public Observable<String> sendRequestObservable(final T c,
+                                                    final String u,
+                                                    final String h,
+                                                    final Map<String, String> ts,
+                                                    final Map<String, String> fs) {
         return Observable.defer(new Func0<Observable<String>>() {
             @Override
             public Observable<String> call() {
                 String res = "";
                 try {
-                    res = sendHttp();
+                    res = sendHttp(c,u,h,ts,fs);
                 } catch (Exception e) {
                     throw OnErrorThrowable.from(e);
                 }
@@ -112,13 +102,13 @@ public class BackgroundHttpUtils<T> {
         });
     }
 
-    private String sendHttp() {
+    private String sendHttp(T c, String u, String h, Map<String, String> ts, Map<String, String> fs) {
         String res;
-        if (httpMethod.equals("GET"))
-            res = HttpRequest.doGet(url);
+        if (h.equals(HTTPMethod.GET))
+            res = HttpRequest.doGet(u);
         else
-            res = HttpRequest.sendMultiRequestBody(url, httpMethod, getTextParams(), fileParams);
-        return httpMethod + url + "|" + res;
+            res = HttpRequest.sendMultiRequestBody(u, h, ts, fs);
+        return h + u + "|" + res;
     }
 
     public static class BackgroundThread extends HandlerThread {

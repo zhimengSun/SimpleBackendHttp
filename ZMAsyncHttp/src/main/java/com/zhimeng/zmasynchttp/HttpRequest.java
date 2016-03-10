@@ -39,15 +39,15 @@ public class HttpRequest {
     }
 
     public static String doPost(String url, String params) {
-        return sendRequestBody(url, "POST", params);
+        return sendRequestBody(url, HTTPMethod.POST, params);
     }
 
     public static String doPut(String url, String params) {
-        return sendRequestBody(url, "PUT", params);
+        return sendRequestBody(url, HTTPMethod.PUT, params);
     }
 
     public static String doDelete(String url) {
-        return sendRequestBody(url, "DELETE","");
+        return sendRequestBody(url, HTTPMethod.DELETE,"");
     }
 
     private static String sendRequestBody(String url, String methodName, String params){
@@ -60,6 +60,8 @@ public class HttpRequest {
                                               Map<String, String> fileParams){
         MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
+
+        requestBodyBuilder.addFormDataPart("ZMRequestMethod", methodName);
 
         if (textParams != null) {
             for (String key : textParams.keySet()) {
@@ -98,9 +100,9 @@ public class HttpRequest {
         Request request;
         Request.Builder builder = new Request.Builder().url(url)
                 .header("User-Agent", getUserAgent());
-        if (methodName.equals("DELETE")){
+        if (methodName.equals(HTTPMethod.DELETE)){
             request = builder.delete(body).build();
-        } else if (methodName.equals("PUT")){
+        } else if (methodName.equals(HTTPMethod.PUT)){
             request = builder.put(body).build();
         } else {
             request = builder.post(body).build();
@@ -120,8 +122,14 @@ public class HttpRequest {
         return res;
     }
 
+    private static String userAgent = "OkHttp With ZMAsyncHttp";
+
+    public static void setUserAgent(String userAgent) {
+        HttpRequest.userAgent = userAgent;
+    }
+
     private static String getUserAgent(){
-        return "OkHttp Headers.java";
+        return userAgent;
     }
 
 }

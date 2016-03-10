@@ -1,24 +1,36 @@
 package com.demo.testzm;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.zhimeng.zmasynchttp.BackgroundHttpUtils;
-import com.zhimeng.zmasynchttp.JSONCallback;
+import com.zhimeng.zmasynchttp.HTTPMethod;
+import com.zhimeng.zmasynchttp.ZMRequestCallback;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class MainActivity extends ActionBarActivity implements JSONCallback {
+public class MainActivity extends ActionBarActivity implements ZMRequestCallback {
+
+    private String url1 = "http://www.sunzhimeng.cn/sync_data";
+    private String url2 = "http://www.sunzhimeng.cn/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BackgroundHttpUtils.getInstance().startSendHttp(this, "http://www.baidu.com");
-    }
 
+        BackgroundHttpUtils backgroundHttpUtils = BackgroundHttpUtils.getInstance();
+        backgroundHttpUtils.startSendHttp(this, url1);
+
+        Map<String,String> params = new HashMap<>();
+//        params.put("name", "name");
+        backgroundHttpUtils.startSendHttp(this, url2, HTTPMethod.POST, params);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,7 +56,11 @@ public class MainActivity extends ActionBarActivity implements JSONCallback {
 
     @Override
     public int handleJsonString(String urlId, String jsonString) {
-        Log.i("ZMAsyncHttp", urlId + " ---> " + jsonString);
+        if (urlId.equals(HTTPMethod.GET + url1)){
+            Log.e("ZMAsyncHttp", urlId + " from get url1 ---> " + jsonString);
+        } else if (urlId.equals(HTTPMethod.POST + url2)) {
+            Log.e("ZMAsyncHttp", urlId + " from post url2 ---> " + jsonString);
+        }
         return 0;
     }
 }
