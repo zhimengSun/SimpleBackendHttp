@@ -1,5 +1,10 @@
-# ZMAsyncHttp
+# ZMAsyncHttp (0.0.3)
 It is an easy way to handle simple json (response string also) from http request which based on RxAndroid and OkHttp.
+You can use handleJsonString callback to handle the response from backend without considering which status code backed or 
+failed, This lib always think the response is ok even we get a 4xx code, Mostly the most thing we are concerned is the response string
+instead of HTTP status code, So I just simplify the style of requesting and  handling data in Andriod, 
+and I hope it's a great tool to make your activities fragments adapters and many other stuffs in android much cleaner. 
+
 
 #Usage
 
@@ -12,29 +17,26 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.0.1'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
-    compile 'com.github.zhimengsun:ZMAsyncHttp:0.0.1'
+    compile 'com.github.zhimengsun:ZMAsyncHttp:0.0.3'
 }
 ``` 
-
 
 > You can also download the ZMAsyncHttp-0.0.1.jar file directly, copy it into you app libs directory and set it up in your build.gradle
-
-
-```java
-dependencies {
-    compile 'com.squareup.okhttp3:okhttp:3.0.1'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava:1.1.0'
-    compile files('libs/ZMAsyncHttp.jar')
-}
-``` 
 
 
 * INTERNET permission in your AndroidManifest.xml
 
 ```java
     <uses-permission android:name="android.permission.INTERNET" />
+```
 
+## customize
+
+```java
+    HttpRequest.REQUEST_TIME_PUT = 'YOUR_VAL' // default 30
+    HttpRequest.WRITE_TIME_PUT = 'YOUR_VAL' // default 30
+    HttpRequest.READ_TIME_PUT = 'YOUR_VAL' // default 30
+    HttpRequest.userAgent = 'YOUR_VAL' // default 'Android OkHttp With ZMAsyncHttp #{version}'
 ```
 
 ## Enjoy

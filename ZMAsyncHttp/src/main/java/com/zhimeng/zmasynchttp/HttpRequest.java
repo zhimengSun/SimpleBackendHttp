@@ -19,15 +19,18 @@ public class HttpRequest {
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
     private static final MediaType MEDIA_TYPE_ZIP = MediaType.parse("zip");
+    private static int REQUEST_TIME_PUT = 30;
+    private static int WRITE_TIME_PUT = 30;
+    private static int READ_TIME_PUT = 30;
+    private static String userAgent = "Android OkHttp With ZMAsyncHttp 0.0.3";
 
     private static OkHttpClient getInstance(){
         if (okHttpClient == null)
            okHttpClient = new OkHttpClient.Builder()
-                   .connectTimeout(30, TimeUnit.SECONDS)
-                   .writeTimeout(30, TimeUnit.SECONDS)
-                   .readTimeout(30, TimeUnit.SECONDS)
+                   .connectTimeout(REQUEST_TIME_PUT, TimeUnit.SECONDS)
+                   .writeTimeout(WRITE_TIME_PUT, TimeUnit.SECONDS)
+                   .readTimeout(READ_TIME_PUT, TimeUnit.SECONDS)
                    .build();
-        
         return okHttpClient;
     }
 
@@ -121,9 +124,6 @@ public class HttpRequest {
         }
         return res;
     }
-
-    private static String userAgent = "OkHttp With ZMAsyncHttp";
-
     public static void setUserAgent(String userAgent) {
         HttpRequest.userAgent = userAgent;
     }
