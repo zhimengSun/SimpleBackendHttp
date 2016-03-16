@@ -8,13 +8,27 @@ It is an easy way to handle simple json (response string also) from http request
 * build.gradle  
 
 ```java
-	
 dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.0.1'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
+    compile 'com.github.zhimengsun:ZMAsyncHttp:0.0.1'
 }
 ``` 
+
+
+> You can also download the ZMAsyncHttp-0.0.1.jar file directly, copy it into you app libs directory and set it up in your build.gradle
+
+
+```java
+dependencies {
+    compile 'com.squareup.okhttp3:okhttp:3.0.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile files('libs/ZMAsyncHttp.jar')
+}
+``` 
+
 
 * INTERNET permission in your AndroidManifest.xml
 
