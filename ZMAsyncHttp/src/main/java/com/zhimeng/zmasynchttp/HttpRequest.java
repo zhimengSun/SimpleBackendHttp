@@ -19,37 +19,37 @@ public class HttpRequest {
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
     private static final MediaType MEDIA_TYPE_ZIP = MediaType.parse("zip");
-    public static int REQUEST_TIME_PUT = 30;
-    public static int WRITE_TIME_PUT = 30;
-    public static int READ_TIME_PUT = 30;
+    public static int REQUEST_TIME_OUT = 30;
+    public static int WRITE_TIME_OUT = 30;
+    public static int READ_TIME_OUT = 30;
     public static String USER_AGENT = "Android OkHttp With ZMAsyncHttp 0.0.3";
 
     private static OkHttpClient getInstance(){
         if (okHttpClient == null)
            okHttpClient = new OkHttpClient.Builder()
-                   .connectTimeout(REQUEST_TIME_PUT, TimeUnit.SECONDS)
-                   .writeTimeout(WRITE_TIME_PUT, TimeUnit.SECONDS)
-                   .readTimeout(READ_TIME_PUT, TimeUnit.SECONDS)
+                   .connectTimeout(REQUEST_TIME_OUT, TimeUnit.SECONDS)
+                   .writeTimeout(WRITE_TIME_OUT, TimeUnit.SECONDS)
+                   .readTimeout(READ_TIME_OUT, TimeUnit.SECONDS)
                    .build();
         return okHttpClient;
     }
 
-    public static String doGet(String url) {
+    public static String get(String url) {
         Request request = new Request.Builder().url(url)
                 .header("User-Agent", USER_AGENT)
                 .build();
         return getResponseJSON(request);
     }
 
-    public static String doPost(String url, String params) {
+    public static String post(String url, String params) {
         return sendRequestBody(url, HTTPMethod.POST, params);
     }
 
-    public static String doPut(String url, String params) {
+    public static String put(String url, String params) {
         return sendRequestBody(url, HTTPMethod.PUT, params);
     }
 
-    public static String doDelete(String url) {
+    public static String delete(String url) {
         return sendRequestBody(url, HTTPMethod.DELETE,"");
     }
 

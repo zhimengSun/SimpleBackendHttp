@@ -105,7 +105,7 @@ public class BackgroundHttpUtils<T> {
     private String sendHttp(T c, String u, String h, Map<String, String> ts, Map<String, String> fs) {
         String res;
         if (h.equals(HTTPMethod.GET))
-            res = HttpRequest.doGet(u);
+            res = HttpRequest.get(u);
         else
             res = HttpRequest.sendMultiRequestBody(u, h, ts, fs);
         return h + u + "|" + res;
