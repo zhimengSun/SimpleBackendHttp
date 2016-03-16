@@ -19,10 +19,10 @@ public class HttpRequest {
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
     private static final MediaType MEDIA_TYPE_ZIP = MediaType.parse("zip");
-    private static int REQUEST_TIME_PUT = 30;
-    private static int WRITE_TIME_PUT = 30;
-    private static int READ_TIME_PUT = 30;
-    private static String userAgent = "Android OkHttp With ZMAsyncHttp 0.0.3";
+    public static int REQUEST_TIME_PUT = 30;
+    public static int WRITE_TIME_PUT = 30;
+    public static int READ_TIME_PUT = 30;
+    public static String USER_AGENT = "Android OkHttp With ZMAsyncHttp 0.0.3";
 
     private static OkHttpClient getInstance(){
         if (okHttpClient == null)
@@ -36,7 +36,7 @@ public class HttpRequest {
 
     public static String doGet(String url) {
         Request request = new Request.Builder().url(url)
-                .header("User-Agent", getUserAgent())
+                .header("User-Agent", USER_AGENT)
                 .build();
         return getResponseJSON(request);
     }
@@ -102,7 +102,7 @@ public class HttpRequest {
     private static String sendRequest(String url, String methodName, RequestBody body){
         Request request;
         Request.Builder builder = new Request.Builder().url(url)
-                .header("User-Agent", getUserAgent());
+                .header("User-Agent", USER_AGENT);
         if (methodName.equals(HTTPMethod.DELETE)){
             request = builder.delete(body).build();
         } else if (methodName.equals(HTTPMethod.PUT)){
@@ -124,12 +124,6 @@ public class HttpRequest {
         }
         return res;
     }
-    public static void setUserAgent(String userAgent) {
-        HttpRequest.userAgent = userAgent;
-    }
 
-    private static String getUserAgent(){
-        return userAgent;
-    }
 
 }
