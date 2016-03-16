@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.zhimeng.zmasynchttp.BackgroundHttpUtils;
 import com.zhimeng.zmasynchttp.HTTPMethod;
+import com.zhimeng.zmasynchttp.UrlTool;
 import com.zhimeng.zmasynchttp.ZMRequestCallback;
 
 import java.util.HashMap;
@@ -56,9 +57,10 @@ public class MainActivity extends ActionBarActivity implements ZMRequestCallback
 
     @Override
     public int handleJsonString(String urlId, String jsonString) {
-        if (urlId.equals(HTTPMethod.GET + url1)){
+        UrlTool urlTool = new UrlTool(urlId);
+        if (urlTool.requestFrom(HTTPMethod.GET, url1)){
             Log.e("ZMAsyncHttp", urlId + " from get url1 ---> " + jsonString);
-        } else if (urlId.equals(HTTPMethod.POST + url2)) {
+        } else if (urlTool.requestFrom(HTTPMethod.POST, url2)) {
             Log.e("ZMAsyncHttp", urlId + " from post url2 ---> " + jsonString);
         }
         return 0;
