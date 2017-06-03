@@ -69,7 +69,7 @@ public class HttpRequest {
         if (textParams != null) {
             for (String key : textParams.keySet()) {
                 String value = textParams.get(key);
-                if (null != value && "".equals(value)){
+                if (null != value){
                     if (key.contains("[]")) {
                         String[] values = value.split(",");
                         for (int i = 0; i < values.length; i++)

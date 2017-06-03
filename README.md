@@ -1,4 +1,4 @@
-# ZMAsyncHttp (0.0.5)
+# ZMAsyncHttp (0.0.6)
 It is an easy way to handle simple json (response string also) from http request which based on RxAndroid and OkHttp.
 You can use handleJsonString callback to handle the response from backend without considering which status code backed or 
 failed, This lib always think the response is ok even we get a 4xx code, Mostly the most thing we are concerned is the response string
@@ -17,11 +17,11 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.0.1'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
-    compile 'com.github.zhimengsun:ZMAsyncHttp:0.0.5'
+    compile 'com.github.zhimengsun:ZMAsyncHttp:0.0.6'
 }
 ``` 
 
-> You can also download the ZMAsyncHttp-0.0.1.jar file directly, copy it into you app libs directory and set it up in your build.gradle
+> You can also download the ZMAsyncHttp-0.0.6.jar file directly, copy it into you app libs directory and set it up in your build.gradle
 
 
 * INTERNET permission in your AndroidManifest.xml
